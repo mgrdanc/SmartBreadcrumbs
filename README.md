@@ -1,3 +1,20 @@
+There is only one minor improvement that I made to this and that is the ability to pass route values to Parent Nodes from children.
+
+In the Example of Home -> List -> Detail -> History 
+Where Detail's action needs route values passed else the breadcrumbs will break on History.
+
+
+On the Parents's Action populate RouteValueKeys with the keys needed,
+On the Child set ViewData.[Key]'s value and a non-node-editing link change will occur. 
+This will also pick up the Area name to preserive previous functionality. 
+
+-M Grdanc
+
+-Feel free to improve.
+
+
+=====================================================================================================================================
+
 # SmartBreadcrumbs 2.0.0
 
 A utility library for ASP.NET Core (both MVC and Razor Pages) websites to easily add and customize breadcrumbs.
