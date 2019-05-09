@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Dynamic;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -76,7 +78,15 @@ namespace SmartBreadcrumbs
                         sb.Insert(0, BreadcrumbManager.Options.SeparatorElement);
                     }
 
-                    sb.Insert(0, GetLi(node, node.GetUrl(_urlHelper), false));
+                    //Extract if there are more RouteValues needed
+                    if (node.RouteValueKeys != null)
+                    {                        
+                        sb.Insert(0, GetLi(node, node.GetUrl(_urlHelper, ExtractRouteKeyValue(node.RouteValues, node.RouteValueKeys)), false));
+                    }
+                    else
+                    {
+                        sb.Insert(0, GetLi(node, node.GetUrl(_urlHelper), false));
+                    }
                 }
             }
 
@@ -150,6 +160,25 @@ namespace SmartBreadcrumbs
 
             // The IconClasses will get ignored if the template doesn't have their index.
             return string.Format(templateToUse, nodeTitle, link, node.IconClasses);
+        }
+
+        private Dictionary<string, object> ExtractRouteKeyValue(Dictionary<string, object> routeValues, IEnumerable<string> keys)
+        {
+            //Reposity for object keyvalue pairs
+            Dictionary<string, object> values = new Dictionary<string, object>(routeValues);
+
+            //Loop through specified keys and search the ViewData for values
+            foreach(string key in keys)
+            {
+                if (!ViewContext.ViewData.ContainsKey(key))
+                    throw new SmartBreadcrumbsException($"Route Key {key} value was not found in ViewData.");
+
+                //If the routevalues already contain the key and values we have do not add them again.
+                if(!values.ContainsKey(key) )
+                    values.Add(key, ViewContext.ViewData[key]);
+            }
+
+            return values;
         }
 
         #endregion

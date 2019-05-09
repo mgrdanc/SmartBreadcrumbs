@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using SmartBreadcrumbs.Extensions;
@@ -33,6 +34,13 @@ namespace SmartBreadcrumbs.Attributes
         /// <para>PS: This can't be null when used on a Breadcrumb.</para>
         /// </summary>
         public Type FromController { get; set; }
+
+        /// <summary>
+        /// An enumerable for route value keys, add any routevalue keys you need for this breadcrumb here.
+        /// <para>Add key values into "ViewData.[Key]" to be automatically added to the breadcrumb</para>
+        /// <para>PS: If the breadcrumb has keys but no values in ViewData we will throw an exception.</para>
+        /// </summary>
+        public string[] RouteValueKeys { get; set; }
 
         /// <summary>
         /// Wheither to replace the node's title with what was found in ViewData.
