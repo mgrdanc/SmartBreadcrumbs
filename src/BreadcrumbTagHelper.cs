@@ -165,7 +165,7 @@ namespace SmartBreadcrumbs
         private Dictionary<string, object> ExtractRouteKeyValue(Dictionary<string, object> routeValues, IEnumerable<string> keys)
         {
             //Reposity for object keyvalue pairs
-            Dictionary<string, object> values = new Dictionary<string, object>(routeValues);
+            Dictionary<string, object> values = new Dictionary<string, object>(routeValues ?? new Dictionary<string, object>());
 
             //Loop through specified keys and search the ViewData for values
             foreach(string key in keys)
